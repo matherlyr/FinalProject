@@ -1,36 +1,28 @@
-var Promise = d3.csv("EduFilms.csv")
-var success = function(data)
-    {
-        console.log(data)
-        //console.log(FreeRecall8)
-        //console.log(data.map(getfilm))
-        //setup(data)
-        
-    }
-var fail = function(data)
-    {
-        console.log("fail")
-    }
-Promise.then(success,fail)
+var EPromise = d3.csv("EduFilms.csv")
 
+var success =function(both)
+{
+    var films=both[0]
+    var participants=both[1]
+    console.log(films)
+    console.log(participants)
+    console.log(FreeRecall8(films))
+    setup(films)
+}
+var fail = function(err)
+{
+    console.log("fail",err)
+}
 var PPromise = d3.csv("Participants.csv")
-var success = function(data)
-    {
-        console.log(data)
-    }
-var fail = function(data)
-    {
-        console.log("fail")
-    }
-PPromise.then(success,fail)
 
+Promise.all([EPromise, PPromise]).then(success,fail)
 
 //var  getfilm = function(d)
 //{
 //    return d.FilmOnce;
 //}
 //
-//var FreeRecall8 = [data[0].SchoolLessonandFilm , data[0].FilmRepetition]
+var FreeRecall8 = function(data){return [data[0].SchoolLessonandFilm , data[0].FilmRepetition]}
 //FreeRecall8[0]=data[0].SchoolLessonandFilm
 //FreeRecall8[1]=data[0].FilmRepetition
 
@@ -38,7 +30,7 @@ var margin = {top: 80, right: 80, bottom: 80, left: 80},
  width = 600 - margin.left - margin.right,
  height = 400 - margin.top - margin.bottom;
 
-var x = d3.scale.ordinal()
+var x = d3.scaleOrdinal()
     .rangeRoundBands([0, width], .1);
 
 var setup = function(data)
@@ -89,18 +81,18 @@ var createBars=function(data)
 	  .attr("dx", "2em")
 	  .style("text-anchor", "end")
 	  .text("#");
-  var bars = svg.selectAll(".bar").data(data).enter();
-    bars.append("rect")
-      .attr("class", "bar1")
-      .attr("x", function(d) { return x(d.8yearsold); })
-      .attr("width", x.rangeBand()/2)
-      .attr("y", function(d) { return y0(d.SchoolLessonandFilm); })
-	  .attr("height", function(d,i,j) { return height - y0(d.SchoolLessonandFilm); }); 
-    bars.append("rect")
-      .attr("class", "bar2")
-      .attr("x", function(d) { return x(d.10yearold) + x.rangeBand()/2; })
-      .attr("width", x.rangeBand() / 2)
-      .attr("y", function(d) { return y1(d.SchoolLessonandFilm); })
-	  .attr("height", function(d,i,j) { return height - y1(d.SchoolLessonandFilm); }); 
+//  var bars = svg.selectAll(".bar").data(data).enter();
+//    bars.append("rect")
+//      .attr("class", "bar1")
+//      .attr("x", function(d) { return x(d.8yearsold); })
+//      .attr("width", x.rangeBand()/2)
+//      .attr("y", function(d) { return y0(d.SchoolLessonandFilm); })
+//	  .attr("height", function(d,i,j) { return height - y0(d.SchoolLessonandFilm); }); 
+//    bars.append("rect")
+//      .attr("class", "bar2")
+//      .attr("x", function(d) { return x(d.10yearold) + x.rangeBand()/2; })
+//      .attr("width", x.rangeBand() / 2)
+//      .attr("y", function(d) { return y1(d.SchoolLessonandFilm); })
+//	  .attr("height", function(d,i,j) { return height - y1(d.SchoolLessonandFilm); }); 
 
     }
