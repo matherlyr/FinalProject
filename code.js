@@ -11,7 +11,7 @@ var success =function(both)
     var participants=both[1]
     console.log(films)
     console.log(participants)
-    
+    console.log(obj)
     console.log(FreeRecall8(films))
     setup(films)
 }
@@ -32,7 +32,7 @@ var FreeRecall8 = function(data){return [data[0].SchoolLessonandFilm , data[0].F
 //FreeRecall8[0]=data[0].SchoolLessonandFilm
 //FreeRecall8[1]=data[0].FilmRepetition
 
-
+var obj = parseFloat(FreeRecall8)
 
 //This is where the real code starts
 
