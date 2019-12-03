@@ -1,5 +1,5 @@
-var screen = {width: 1200, height:600}
-var margin = {top: 80, right: 80, bottom: 80, left: 80};
+var screen = {width: 600, height:600}
+var margin = {top: 50, right: 80, bottom: 30, left: 80};
 
 
 
@@ -9,9 +9,19 @@ var success =function(both)
 {
     var films=both[0]
     var participants=both[1]
+    
+    var parsing1 = function(d){d.FilmOnce = +d.FilmOnce}
+    var parsing2 = function(d){d.FilmRepetition = +d.FilmRepetition}
+    var parsing3 = function(d){d.SchoolLessonOnce = +d.SchoolLessonOnce}
+    var parsing4 = function(d){d.SchoolLessonandFilm = +d.SchoolLessonandFilm}
+    
+    films.forEach(parsing1)
+    films.forEach(parsing2)
+    films.forEach(parsing3)
+    films.forEach(parsing4)
+    
     console.log(films)
     console.log(participants)
-    console.log(obj)
     console.log(FreeRecall8(films))
     setup(films)
 }
@@ -29,10 +39,6 @@ Promise.all([EPromise, PPromise]).then(success,fail)
 //}
 //
 var FreeRecall8 = function(data){return [data[0].SchoolLessonandFilm , data[0].FilmRepetition, data[0].FilmOnce , data[0].SchoolLessonOnce]}
-//FreeRecall8[0]=data[0].SchoolLessonandFilm
-//FreeRecall8[1]=data[0].FilmRepetition
-
-var obj = parseFloat(FreeRecall8)
 
 //This is where the real code starts
 
@@ -55,7 +61,7 @@ var setup = function(data)
         .domain(["School Lesson and Film" , "Film Repetition" , "Film Once" , "School Lesson Once"])
         .range([0, screen.width])
     var yScale = d3.scaleLinear()
-        .domain([0,100])
+        .domain([-15.3,100])
         .range([screen.height, 0])
     
     var cScale=d3.scaleOrdinal(d3.schemeTableau10)
@@ -80,10 +86,10 @@ var setup = function(data)
         .attr("transform", "translate(80,"+margin.top+")")
         .call(yAxis1)
     
-    createBars(data, xScale, yScale);
+    createBars(data, xScale, yScale, cScale);
 }
 
-var createBars=function(data,xScale, yScale)
+var createBars=function(data,xScale, yScale, cScale)
 {
 //  svg.append("g")
 //      .attr("class", "x axis")
@@ -112,19 +118,25 @@ var createBars=function(data,xScale, yScale)
 //	  .text("#");
   var bars = 
     d3.select("svg").selectAll("rect").data(FreeRecall8(data)).enter().append("rect")
-      .attr("class", "bar1")
-      .attr("x", function(d) { return xScale(d.SchoolLessonandFilm); })
-      .attr("width", xScale.rangeBand()/2)
-      .attr("y", function(d) { return y0(d.SchoolLessonandFilm); })
-	  .attr("height", function(d,i,j) { return height - y0(d.SchoolLessonandFilm); }); 
-    bars.append("rect")
-      .attr("class", "bar2")
-      .attr("x", function(d) 
-            {
-        return xScale(d["10yearold"]); // + xScale.rangeBand()/2); 
-                             })
-      .attr("width", x.rangeBand() / 2)
-      .attr("y", function(d) { return y1(d.SchoolLessonandFilm); })
-	  .attr("height", function(d,i,j) { return height - y1(d.SchoolLessonandFilm); }); 
+        .attr("width", 100)
+        .attr("height", function(d, index){console.log("index",index)
+                                           return yScale(d)})
+        .attr ("x", function (d, index){return xScale(index)} )
+    
+    
+//      .attr("class", "bar1")
+//      .attr("x", function(d) { return xScale(d.SchoolLessonandFilm); })
+//      .attr("width", xScale.rangeBand()/2)
+//      .attr("y", function(d) { return yScale(d.SchoolLessonandFilm); })
+//	  .attr("height", function(d,i,j) { return height - y0(d.SchoolLessonandFilm); }); 
+//    bars.append("rect")
+//      .attr("class", "bar2")
+//      .attr("x", function(d) 
+//            {
+//        return xScale(d["10yearold"]); // + xScale.rangeBand()/2); 
+//                             })
+//      .attr("width", x.rangeBand() / 2)
+//      .attr("y", function(d) { return y1(d.SchoolLessonandFilm); })
+//	  .attr("height", function(d,i,j) { return height - y1(d.SchoolLessonandFilm); }); 
 
     }
