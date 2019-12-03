@@ -23,6 +23,8 @@ var success =function(both)
     console.log(films)
     console.log(participants)
     console.log(FreeRecall8(films))
+    console.log(FreeRecall10(films))
+    console.log(OE8(films))
     setup(films)
 }
 var fail = function(err)
@@ -39,6 +41,8 @@ Promise.all([EPromise, PPromise]).then(success,fail)
 //}
 //
 var FreeRecall8 = function(data){return [data[0].SchoolLessonandFilm , data[0].FilmRepetition, data[0].FilmOnce , data[0].SchoolLessonOnce]}
+var FreeRecall10 = function(data){return [data[1].SchoolLessonandFilm , data[1].FilmRepetition, data[1].FilmOnce , data[1].SchoolLessonOnce]}
+var OE8 = function(data){return [data[2].SchoolLessonandFilm , data[2].FilmRepetition, data[2].FilmOnce , data[2].SchoolLessonOnce]}
 
 //This is where the real code starts
 
@@ -63,6 +67,9 @@ var setup = function(data)
     var yScale = d3.scaleLinear()
         .domain([-15.3,100])
         .range([screen.height, 0])
+    var numxScale= d3.scaleLinear()
+        .domain([0,4])
+        .range([0, screen.width])
     
     var cScale=d3.scaleOrdinal(d3.schemeTableau10)
     
@@ -86,57 +93,16 @@ var setup = function(data)
         .attr("transform", "translate(80,"+margin.top+")")
         .call(yAxis1)
     
-    createBars(data, xScale, yScale, cScale);
+    createBars(data, xScale, yScale, cScale, numxScale);
 }
 
-var createBars=function(data,xScale, yScale, cScale)
+var createBars=function(data,xScale, yScale, cScale, numxScale)
 {
-//  svg.append("g")
-//      .attr("class", "x axis")
-//      .attr("transform", "translate(0," + height + ")")
-//      .call(xAxis);
-//  svg.append("g")
-//	  .attr("class", "y axis axisLeft")
-//	  .attr("transform", "translate(0,0)")
-//	  .call(yAxisLeft)
-//	.append("text")
-//	  .attr("y", 6)
-//	  .attr("dy", "-2em")
-//	  .style("text-anchor", "end")
-//	  .style("text-anchor", "end")
-//	  .text("Average Percent Correct");
-//	
-//  svg.append("g")
-//	  .attr("class", "y axis axisRight")
-//	  .attr("transform", "translate(" + (width) + ",0)")
-//	  .call(yAxisRight)
-//	.append("text")
-//	  .attr("y", 6)
-//	  .attr("dy", "-2em")
-//	  .attr("dx", "2em")
-//	  .style("text-anchor", "end")
-//	  .text("#");
-  var bars = 
-    d3.select("svg").selectAll("rect").data(FreeRecall8(data)).enter().append("rect")
+    d3.select("#graph").selectAll("rect").data(FreeRecall8(data)).enter().append("rect")
         .attr("width", 100)
-        .attr("height", function(d, index){console.log("index",index)
-                                           return yScale(d)})
-        .attr ("x", function (d, index){return xScale(index)} )
-    
-    
-//      .attr("class", "bar1")
-//      .attr("x", function(d) { return xScale(d.SchoolLessonandFilm); })
-//      .attr("width", xScale.rangeBand()/2)
-//      .attr("y", function(d) { return yScale(d.SchoolLessonandFilm); })
-//	  .attr("height", function(d,i,j) { return height - y0(d.SchoolLessonandFilm); }); 
-//    bars.append("rect")
-//      .attr("class", "bar2")
-//      .attr("x", function(d) 
-//            {
-//        return xScale(d["10yearold"]); // + xScale.rangeBand()/2); 
-//                             })
-//      .attr("width", x.rangeBand() / 2)
-//      .attr("y", function(d) { return y1(d.SchoolLessonandFilm); })
-//	  .attr("height", function(d,i,j) { return height - y1(d.SchoolLessonandFilm); }); 
+        .attr("height", function(d){return yScale(100 - d)})
+        .attr ("x", function (d, index){
+       return numxScale(index)} )
+        .attr ("y", function (d){return yScale(d)})
 
-    }
+}
