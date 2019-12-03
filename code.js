@@ -111,10 +111,10 @@ var createBars=function(data,xScale, yScale)
 //	  .style("text-anchor", "end")
 //	  .text("#");
   var bars = 
-    d3.select("svg").selectAll("rect").data(FreeRecall8).enter().append("rect")
+    d3.select("svg").selectAll("rect").data(FreeRecall8(data)).enter().append("rect")
       .attr("class", "bar1")
       .attr("x", function(d) { return xScale(d.SchoolLessonandFilm); })
-      .attr("width", x.rangeBand()/2)
+      .attr("width", xScale.rangeBand()/2)
       .attr("y", function(d) { return y0(d.SchoolLessonandFilm); })
 	  .attr("height", function(d,i,j) { return height - y0(d.SchoolLessonandFilm); }); 
     bars.append("rect")
