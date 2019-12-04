@@ -334,7 +334,7 @@ var OEBars=function(data,xScale, yScale, cScale, numxScale)
 
 var ImportantBars=function(data,xScale, yScale, cScale, numxScale)
 {
-     d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Important Questions")
+     d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Important Information Questions")
     d3.select("#graph").selectAll("rect").data(Important8(data)).enter().append("rect")
         .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
@@ -383,7 +383,7 @@ var ImportantBars=function(data,xScale, yScale, cScale, numxScale)
 
 var UnimportantBars=function(data,xScale, yScale, cScale, numxScale)
 {
-    d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Unimportant Questions")
+    d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Unimportant Information Questions")
     d3.select("#graph").selectAll("rect").data(Unimportant8(data)).enter().append("rect")
         .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
