@@ -22,3 +22,15 @@
     font-family: sans-serif; font-size: 16px;
     line-height: 20px; 
 }
+
+body{
+    background-color: #1d7a30; 
+}
+
+div{
+    width:auto;
+    background-color: white;
+    border-color: black;
+    border: 2px solid black;
+    
+}

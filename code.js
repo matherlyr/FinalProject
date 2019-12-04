@@ -54,6 +54,7 @@ var Important8 = function(data){return [data[6].SchoolLessonandFilm , data[6].Fi
 var Important10 = function(data){return [data[7].SchoolLessonandFilm , data[7].FilmRepetition, data[7].FilmOnce , data[7].SchoolLessonOnce]}
 var Unimportant8 = function(data){return [data[8].SchoolLessonandFilm , data[8].FilmRepetition, data[8].FilmOnce , data[8].SchoolLessonOnce]}
 var Unimportant10 = function(data){return [data[9].SchoolLessonandFilm , data[9].FilmRepetition, data[9].FilmOnce , data[9].SchoolLessonOnce]}
+var dummy = function(data){return [data[10].SchoolLessonandFilm]}
 
 //This is where the real code starts
 
@@ -79,7 +80,7 @@ var setup = function(data)
     
     var xScale = d3.scaleBand()
         .domain(["School Lesson and Film" , "Film Repetition" , "Film Once" , "School Lesson Once"])
-        .range([0, screen.width])
+        .rangeRound([0, screen.width-120])
         .paddingInner(.5)
     var yScale = d3.scaleLinear()
         .domain([-15.3,100])
@@ -126,6 +127,12 @@ var setup = function(data)
         .attr("id", "yAxis")
         .attr("transform", "translate(80,"+margin.top+")")
         .call(yAxis1)
+    
+//    d3.select("svg")   
+//        .append("text")
+//        .attr("transform", "translate("+ (width/2) + "," + (height+margins.top+30)+")")
+//        .style("text-anchor", "middle")
+//        .text("Average Precentage of Correct Answers")
     
     FreeRecallBars(data, xScale, yScale, cScale, numxScale);
     
@@ -178,6 +185,8 @@ var setup = function(data)
 
 var FreeRecallBars=function(data,xScale, yScale, cScale, numxScale)
 {
+   
+    d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Free Recall")
     d3.select("#graph").selectAll("rect").data(FreeRecall8(data)).enter().append("rect")
         .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
@@ -185,7 +194,7 @@ var FreeRecallBars=function(data,xScale, yScale, cScale, numxScale)
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#0984e3")
         .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -201,13 +210,13 @@ var FreeRecallBars=function(data,xScale, yScale, cScale, numxScale)
         })
     
     d3.select("#transform2").selectAll("rect").data(FreeRecall10(data)).enter().append("rect")
-        .attr("width", 100)
+        .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
         .attr ("x", function (d, index){return numxScale(index)} )
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#d63031")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label =  d 
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -221,13 +230,13 @@ var FreeRecallBars=function(data,xScale, yScale, cScale, numxScale)
             d3.select("#tooltip")
               .classed("hidden", true)
         })
-    
-//tooltip goes here on pg 213 of Murray    .on 
 
 }
 
 var RecognitionBars=function(data,xScale, yScale, cScale, numxScale)
 {
+    
+    d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Recognition Questions")
     d3.select("#graph").selectAll("rect").data(Recognition8(data)).enter().append("rect")
         .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
@@ -235,7 +244,7 @@ var RecognitionBars=function(data,xScale, yScale, cScale, numxScale)
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#0984e3")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -251,13 +260,13 @@ var RecognitionBars=function(data,xScale, yScale, cScale, numxScale)
         })
     
     d3.select("#transform2").selectAll("rect").data(Recognition10(data)).enter().append("rect")
-        .attr("width", 100)
+        .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
         .attr ("x", function (d, index){return numxScale(index)} )
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#d63031")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -276,6 +285,7 @@ var RecognitionBars=function(data,xScale, yScale, cScale, numxScale)
 
 var OEBars=function(data,xScale, yScale, cScale, numxScale)
 {
+    d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Open-Ended Questions")
     d3.select("#graph").selectAll("rect").data(OE8(data)).enter().append("rect")
         .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
@@ -283,7 +293,7 @@ var OEBars=function(data,xScale, yScale, cScale, numxScale)
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#0984e3")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -299,13 +309,13 @@ var OEBars=function(data,xScale, yScale, cScale, numxScale)
         })
     
     d3.select("#transform2").selectAll("rect").data(OE10(data)).enter().append("rect")
-        .attr("width", 100)
+        .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
         .attr ("x", function (d, index){return numxScale(index)} )
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#d63031")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -324,6 +334,7 @@ var OEBars=function(data,xScale, yScale, cScale, numxScale)
 
 var ImportantBars=function(data,xScale, yScale, cScale, numxScale)
 {
+     d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Important Questions")
     d3.select("#graph").selectAll("rect").data(Important8(data)).enter().append("rect")
         .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
@@ -331,7 +342,7 @@ var ImportantBars=function(data,xScale, yScale, cScale, numxScale)
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#0984e3")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -347,13 +358,13 @@ var ImportantBars=function(data,xScale, yScale, cScale, numxScale)
         })
     
     d3.select("#transform2").selectAll("rect").data(Important10(data)).enter().append("rect")
-        .attr("width", 100)
+        .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
         .attr ("x", function (d, index){return numxScale(index)} )
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#d63031")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -372,6 +383,7 @@ var ImportantBars=function(data,xScale, yScale, cScale, numxScale)
 
 var UnimportantBars=function(data,xScale, yScale, cScale, numxScale)
 {
+    d3.select("#info").selectAll("h2").data(dummy(data)).enter().append("h2").text("Unimportant Questions")
     d3.select("#graph").selectAll("rect").data(Unimportant8(data)).enter().append("rect")
         .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
@@ -379,7 +391,7 @@ var UnimportantBars=function(data,xScale, yScale, cScale, numxScale)
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#0984e3")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -395,13 +407,13 @@ var UnimportantBars=function(data,xScale, yScale, cScale, numxScale)
         })
     
     d3.select("#transform2").selectAll("rect").data(Unimportant10(data)).enter().append("rect")
-        .attr("width", 100)
+        .attr("width", xScale.bandwidth())
         .attr("height", function(d){return yScale(100 - d)})
         .attr ("x", function (d, index){return numxScale(index)} )
         .attr ("y", function (d){return yScale(d)})
         .attr("fill", "#d63031")
     .on("mouseover", function(d) {
-            var label = "(" + d + ")"
+            var label = d
             d3.select("#tooltip")
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY - 20) + "px")
@@ -424,4 +436,5 @@ var remove = function()
     {
         d3.selectAll("#graph *").remove()
         d3.selectAll("#transform2 *").remove()
+        d3.selectAll("#info *").remove()
     }
